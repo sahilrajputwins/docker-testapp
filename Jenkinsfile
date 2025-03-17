@@ -15,6 +15,7 @@ pipeline{
                     } else {
                         echo 'running the containers...'
                     }
+                    bat 'docker compose -f light-form.yaml build'
                     bat 'docker compose -f light-form.yaml up -d'
                 }              
             }
