@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0  #  Java is required by SonarScanner
+    steps:
+      - checkout
+
+      - setup_remote_docker  #  Required for running docker-compose
+
+      - run:
+          name: Install dependencies and build project
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+            docker-compose up -d
+
+      - sonarcloud/scan  #  Automatically uses env vars + scans project
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud  #  Make sure this context has SONAR_TOKEN

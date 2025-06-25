@@ -14,10 +14,10 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: qwerty
-      ME_CONFIG_MONGODB_URL: mongodb://admin:qwerty@mongo:27017/  #mongo here actually is container name
+      ME_CONFIG_MONGODB_URL: mongodb://admin:qwerty@mongo:27017/  # mongo here actually is container name
 
   testapp:
-    image: testapp:1.4
+    image: sahilrajputwins/docker-testapp:1.4
     ports:
     - 5050:5050
     environment:
