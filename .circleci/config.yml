@@ -2,8 +2,8 @@ version: 2.1
 
 jobs:
   docker-compose-up:
-    docker:
-      - image: cimg/base:current  # This is the Docker image your job will run in, based on Ubuntu, with basic build tools.
+    machine: true
+    resource_class: sahilrajputwins/my-hosted-agent
     steps:
       - checkout
 
