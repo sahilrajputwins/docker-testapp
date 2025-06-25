@@ -1,44 +1,28 @@
 version: 2.1
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
 jobs:
-  docker-compose-up:
+  build:
     docker:
-      - image: cimg/openjdk:17.0 
+      - image: cimg/openjdk:17.0  # ✅ Java is required by SonarScanner
     steps:
       - checkout
 
-      - setup_remote_docker
+      - setup_remote_docker  # ✅ Required for running docker-compose
 
       - run:
-          name: Install Docker Compose
+          name: Install dependencies and build project
           command: |
             sudo apt-get update
             sudo apt-get install -y docker-compose
+            docker-compose up -d
 
-      - run:
-          name: Run Docker Compose
-          command: docker-compose up -d
-
-      - run:
-          name: Install SonarScanner CLI
-          command: |
-            curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-            unzip sonar-scanner.zip
-            mv sonar-scanner-* sonar-scanner
-            echo 'export PATH="$PWD/sonar-scanner/bin:$PATH"' >> $BASH_ENV
-
-      - run:
-          name: Run SonarCloud Analysis
-          command: |
-            source $BASH_ENV
-            sonar-scanner \
-              -Dsonar.organization=$SONAR_ORGANIZATION \
-              -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN
+      - sonarcloud/scan  # ✅ Automatically uses env vars + scans project
 
 workflows:
-  run-compose:
+  main:
     jobs:
-      - docker-compose-up
+      - build:
+          context: SonarCloud  # ✅ Make sure this context has SONAR_TOKEN
