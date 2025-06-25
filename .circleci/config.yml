@@ -6,9 +6,7 @@ jobs:
     resource_class: sahilrajputwins/my-hosted-agent
     steps:
       - checkout
-
-      - setup_remote_docker # This is there because cicrcleCi containers can’t run Docker natively because they’re already running inside Docker.
-                            # This step sets up a separate remote Docker environment here Docker commands can work.
+      
       - run:
           name: Install Docker Compose
           command: |
