@@ -17,7 +17,7 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://admin:qwerty@mongo:27017/  # mongo here actually is container name
 
   testapp:
-    image: sahilrajputwins/docker-testapp
+    image: sahilrajputwins/docker-testapp:1.4
     ports:
     - 5050:5050
     environment:
